@@ -1,9 +1,10 @@
 import time
 import socketserver
+from core.Config import config
 from core.RequestHandler import Handler
 
-HOST_NAME = '127.0.0.1'
-PORT = 3000
+HOST_NAME = config['server']['host']
+PORT = config['server']['port']
 
 with socketserver.TCPServer((HOST_NAME, PORT), Handler) as httpd:
     print("[%s]" % time.asctime(), "Server Starts - %s:%s" % (HOST_NAME, PORT))
