@@ -1,5 +1,7 @@
 from string import Formatter
-
+import traceback
+from core.Config import config
+import sys
 
 class View:
 
@@ -15,17 +17,23 @@ class View:
             data = self.data
 
         try:
+            # TODO change format brackets
+            # Suggestion 1: use Formatter class
+            # Suggestion 2: Regex replace:          \$\{( (?:[_a-zA-Z]\w*)(?:\.(?:[_a-zA-Z]\w*))?(?:\[(?:"\w+"|\d+)\])? ?(?:\! ?[s|r])? ?(?:\: ?\w+)?) \}
             page = page.format(**data)
-        except KeyError:
-            page = self.error_page(500, True)
+            self.request.write_page(self.RESPONSE_CODE, page)
+        except KeyError as e:
+            raise KeyError("Undefined variable {} in view '{}'".format(e.__str__(), view))
             pass
 
-        self.request.send_response(self.RESPONSE_CODE)
-        self.request.send_header("Content-type", "text/html")
-        self.request.end_headers()
-        self.request.wfile.write(page.encode('UTF-8'))
-
-        return True
+            # if config['debug']:
+            #     page = "<p><strong>%s</strong></p>" % traceback.format_exc()
+            #
+            #     for line in traceback.format_stack():
+            #         page += "<p>%s</p>" % line
+            # else:
+            #     page = self.error_page(500, True)
+            # pass
 
     def load(self, view):
         if view is False:
