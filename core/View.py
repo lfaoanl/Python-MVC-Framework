@@ -54,7 +54,7 @@ class View:
     def error_page(self, code, formatted=False):
         self.RESPONSE_CODE = code
         self.data = self.get_error_codes(code)
-        page = self.fetch("404", "/errors")
+        page = self.fetch("ui", "/errors")
 
         if formatted:
             return page.format(**self.data)

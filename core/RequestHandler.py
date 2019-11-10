@@ -2,7 +2,6 @@ from http.server import BaseHTTPRequestHandler
 from core.Router import Router
 from core.View import View
 from core.Config import config
-import sys
 import traceback
 
 class Http:
